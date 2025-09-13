@@ -1,6 +1,6 @@
 ## Getting Started
 
-You will need .env.local file in the project which will have following details:
+You will need `.env.local` file in the project which will have following details:
 
 ```bash
 MONGODB_URI = "mongodb+srv://username:password@cluster0.jhbbojy.mongodb.net/glsplacement?retryWrites=true&w=majority"
@@ -8,20 +8,22 @@ JWT_SECRET = "your_jwt"
 NODE_ENV = "development"
 ```
 
-After cloning this repo, git clone `url`:
+1) Clone this repo:
+```bash
+git clone https://github.com/Saurabh77-99/gls-portal.git
+```
 
+2) Installing all the dependencies:
 ```bash
 pnpm install 
 ```
 
-for seeding data in mongodb database:
-
+3) for seeding data in mongodb database:
 ```bash
 pnpm run seed
 ```
 
-for running the project:
-
+4) for running the project:
 ```bash
 pnpm dev
 ```
