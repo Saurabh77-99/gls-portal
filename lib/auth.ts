@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TokenPayload } from "@/types";
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -44,5 +46,39 @@ export const isTokenExpired = (token: string): boolean => {
     return decoded.exp * 1000 < Date.now();
   } catch {
     return true;
+  }
+};
+
+export const hashPassword = async (password: string): Promise<string> => {
+  return await bcrypt.hash(password, 12);
+};
+
+export const verifyPassword = async (
+  password: string,
+  hashedPassword: string
+): Promise<boolean> => {
+  return await bcrypt.compare(password, hashedPassword);
+};
+
+export const generateAdminToken = (payload: {
+  adminId: string;
+  username: string;
+  role: string;
+}): string => {
+  return jwt.sign(payload, JWT_SECRET, { 
+    expiresIn: "8h",
+    issuer: "gls-admin-portal"
+  });
+};
+
+export const verifyAdminToken = (token: string) => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET, {
+      issuer: "gls-admin-portal"
+    });
+    return decoded;
+  } catch (error) {
+    console.error("Admin token verification failed:", error);
+    return null;
   }
 };

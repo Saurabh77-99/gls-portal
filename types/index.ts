@@ -79,3 +79,34 @@ export interface ApiResponse<T> {
   error?: string;
   message?: string;
 }
+
+export interface Admin {
+  _id: string;
+  username: string;
+  password: string;
+  role: "admin" | "super_admin";
+  college: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AdminTokenPayload {
+  adminId: string;
+  username: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+
+export interface ImportResult {
+  total: number;
+  processed: number;
+  created: number;
+  updated: number;
+  skipped: number;
+  errors: Array<{
+    row: number;
+    name: string;
+    errors: string[];
+  }>;
+}

@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx scripts/seed.ts",
+    "seed-admin": "tsx scripts/seedAdmin.ts",
+    "import-students": "tsx scripts/importStudents.ts",
+    "import-dry-run": "tsx scripts/importStudents.ts --dry-run",
     "seed:fresh": "tsx scripts/seed.ts && echo 'Database seeded with fresh data!'",
     "db:connect": "tsx -e \"import connectDB from './lib/db'; connectDB().then(() => console.log('✅ DB Connected')).catch(console.error)\""
   },
@@ -17,7 +20,8 @@
     "mongoose": "^8.18.1",
     "next": "15.5.3",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
