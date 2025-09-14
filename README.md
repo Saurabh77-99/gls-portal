@@ -1,6 +1,6 @@
 ## Getting Started
 
-You will need .env.local file in the project which will have following details:
+You will need `.env.local` file in the project which will have following details:
 
 ```bash
 MONGODB_URI = "mongodb+srv://username:password@cluster0.jhbbojy.mongodb.net/glsplacement?retryWrites=true&w=majority"
@@ -19,6 +19,7 @@ cd <repository-folder>
 
 Next, install the project dependencies using pnpm:
 
+2) Installing all the dependencies:
 ```bash
 pnpm install
 ```
