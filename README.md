@@ -1,12 +1,6 @@
-## Getting Started
+## 🚀 Getting Started
 
-You will need `.env.local` file in the project which will have following details:
-
-```bash
-MONGODB_URI = "mongodb+srv://username:password@cluster0.jhbbojy.mongodb.net/glsplacement?retryWrites=true&w=majority"
-JWT_SECRET = "your_jwt"
-NODE_ENV = "development"
-```
+Follow these steps to get the project up and running on your local machine.
 
 ### 1\. Installation
 
@@ -19,7 +13,6 @@ cd <repository-folder>
 
 Next, install the project dependencies using pnpm:
 
-2) Installing all the dependencies:
 ```bash
 pnpm install
 ```
@@ -171,7 +164,9 @@ curl -X POST "http://localhost:3000/api/admin/import/excel" \
 
 ### Admin APIs (Requires `X-Admin-Key` Header)
 
-| `POST` | `/api/admin/students` | Create a new student. 
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/admin/students` | Create a new student. |
 | `PUT` | `/api/admin/students` | Bulk create or update students from an array. |
 | `PUT` | `/api/admin/students/:id` | Update a specific student by ID. |
 | `DELETE` | `/api/admin/students/:id` | Delete a student by ID. |
