@@ -15,12 +15,16 @@
     "db:connect": "tsx -e \"import connectDB from './lib/db'; connectDB().then(() => console.log('✅ DB Connected')).catch(console.error)\""
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "bcryptjs": "^3.0.2",
+    "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
     "next": "15.5.3",
+    "postcss": "^8.5.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "tailwindcss": "^4.1.13",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
