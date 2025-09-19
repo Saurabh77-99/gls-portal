@@ -9,7 +9,7 @@ interface Params {
 }
 
 // UPDATE student
-export async function PUT(request: NextRequest, { params }: { params: Params }) {
+export async function PUT(request: NextRequest, context: { params: Params }) { // <-- FIX HERE
   try {
     const auth = validateAdminAuthentication(request);
     if (!auth.isValid) {
@@ -20,6 +20,7 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
     }
 
     await connectDB();
+    const { params } = context; // <-- AND FIX HERE
     const { id } = params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -31,8 +32,8 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
 
     const updateData = await request.json();
     const student = await Student.findByIdAndUpdate(
-      id, 
-      updateData, 
+      id,
+      updateData,
       { new: true, runValidators: true }
     );
 
@@ -59,7 +60,7 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
 }
 
 // DELETE student
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(request: NextRequest, context: { params: Params }) { // <-- FIX HERE
   try {
     const auth = validateAdminAuthentication(request);
     if (!auth.isValid) {
@@ -70,6 +71,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
     }
 
     await connectDB();
+    const { params } = context; // <-- AND FIX HERE
     const { id } = params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
