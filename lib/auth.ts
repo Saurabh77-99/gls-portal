@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TokenPayload } from "@/types";
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
