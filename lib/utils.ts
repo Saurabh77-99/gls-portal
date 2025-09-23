@@ -7,7 +7,7 @@ export const getAuthToken = (request: NextRequest): string | null => {
 
 export const validateAuthentication = (request: NextRequest) => {
   const token = getAuthToken(request);
-  
+
   if (!token) {
     return { isValid: false, error: "Access denied. No token provided." };
   }
@@ -29,6 +29,21 @@ export const getAdminToken = (request: NextRequest): string | null => {
   return request.cookies.get("adminToken")?.value || null;
 };
 
+export const validateAdminAuthentication = (request: NextRequest) => {
+  const adminKey = request.headers.get("x-admin-key");
+  if (adminKey && adminKey === process.env.ADMIN_API_KEY) {
+    return { isValid: true, admin: true, method: "api-key" };
+  }
+  const token = getAdminToken(request);
+  if (token) {
+    const decoded = verifyAdminToken(token);
+    if (decoded) {
+      return { isValid: true, admin: decoded, method: "jwt" };
+    }
+  }
+  return { isValid: false, error: "Admin access denied. Invalid credentials." };
+};
+
 export const sanitizeStudent = (student: Student) => {
   const { __v, ...sanitized } = student.toObject ? student.toObject() : student;
   return sanitized;
@@ -42,9 +57,16 @@ type StudentFilter = {
   branch?: { $regex: string; $options: string };
   batch?: string;
   semester?: number;
+  languagesKnown?: { $in: string[] };
+  "preferences.location"?: { $in: string[] };
+  "preferences.jobType"?: { $in: string[] };
+  "socialLinks.github"?: { $exists: boolean };
+  "socialLinks.linkedin"?: { $exists: boolean };
 };
 
-export const buildStudentFilter = (searchParams: URLSearchParams) => {
+export const buildStudentFilter = (
+  searchParams: URLSearchParams
+): StudentFilter => {
   const filter: StudentFilter = {};
 
   const specialization = searchParams.get("specialization");
@@ -55,6 +77,11 @@ export const buildStudentFilter = (searchParams: URLSearchParams) => {
   const branch = searchParams.get("branch");
   const batch = searchParams.get("batch");
   const semester = searchParams.get("semester");
+  const languages = searchParams.get("languages");
+  const location = searchParams.get("location");
+  const jobType = searchParams.get("jobType");
+  const hasGithub = searchParams.get("hasGithub");
+  const hasLinkedin = searchParams.get("hasLinkedin");
 
   if (specialization) {
     filter.specialization = { $regex: specialization, $options: "i" };
@@ -67,12 +94,12 @@ export const buildStudentFilter = (searchParams: URLSearchParams) => {
   }
 
   if (tags) {
-    const tagArray = tags.split(",").map(tag => tag.trim());
+    const tagArray = tags.split(",").map((tag) => tag.trim());
     filter.tags = { $in: tagArray };
   }
 
   if (skills) {
-    const skillArray = skills.split(",").map(skill => skill.trim());
+    const skillArray = skills.split(",").map((skill) => skill.trim());
     filter.skills = { $in: skillArray };
   }
 
@@ -88,28 +115,51 @@ export const buildStudentFilter = (searchParams: URLSearchParams) => {
     filter.semester = parseInt(semester);
   }
 
+  if (languages) {
+    const languageArray = languages.split(",").map((lang) => lang.trim());
+    filter.languagesKnown = { $in: languageArray };
+  }
+
+  if (location) {
+    const locationArray = location.split(",").map((loc) => loc.trim());
+    filter["preferences.location"] = { $in: locationArray };
+  }
+
+  if (jobType) {
+    const jobTypeArray = jobType.split(",").map((type) => type.trim());
+    filter["preferences.jobType"] = { $in: jobTypeArray };
+  }
+
+  if (hasGithub === "true") {
+    filter["socialLinks.github"] = { $exists: true };
+  }
+
+  if (hasLinkedin === "true") {
+    filter["socialLinks.linkedin"] = { $exists: true };
+  }
+
   return filter;
 };
 
 // Add admin authentication validation
-export const validateAdminAuthentication = (request: NextRequest) => {
-  // Method 1: Check for admin API key in headers (for API access)
-  const adminKey = request.headers.get("x-admin-key");
-  if (adminKey && adminKey === process.env.ADMIN_API_KEY) {
-    return { isValid: true, admin: true, method: "api-key" };
-  }
+// export const validateAdminAuthentication = (request: NextRequest) => {
+//   // Method 1: Check for admin API key in headers (for API access)
+//   const adminKey = request.headers.get("x-admin-key");
+//   if (adminKey && adminKey === process.env.ADMIN_API_KEY) {
+//     return { isValid: true, admin: true, method: "api-key" };
+//   }
 
-  // Method 2: Check for admin JWT token (for web dashboard)
-  const token = getAdminToken(request);
-  if (token) {
-    const decoded = verifyAdminToken(token);
-    if (decoded) {
-      return { isValid: true, admin: decoded, method: "jwt" };
-    }
-  }
+//   // Method 2: Check for admin JWT token (for web dashboard)
+//   const token = getAdminToken(request);
+//   if (token) {
+//     const decoded = verifyAdminToken(token);
+//     if (decoded) {
+//       return { isValid: true, admin: decoded, method: "jwt" };
+//     }
+//   }
 
-  return { isValid: false, error: "Admin access denied. Invalid credentials." };
-};
+//   return { isValid: false, error: "Admin access denied. Invalid credentials." };
+// };
 
 export interface RawStudentData {
   Name?: string;
@@ -124,33 +174,88 @@ export interface RawStudentData {
   specialization?: string;
   CGPA?: string | number;
   cgpa?: string | number;
+  "Previous Semester CGPA"?: string | number;
+  previousSemesterCgpa?: string | number;
   Achievements?: string;
   achievements?: string;
+  "Achievement Descriptions"?: string;
   Skills?: string;
   skills?: string;
   Experience?: string;
-  'Experience Role'?: string;
-  'Experience Duration'?: string;
-  'Experience Description'?: string;
+  "Experience Role"?: string;
+  "Experience Duration"?: string;
+  "Experience Description"?: string;
+  "Experience Certificate"?: string;
   Projects?: string;
-  'Project Description'?: string;
-  'Project Tech'?: string;
-  'Project Links'?: string;
+  "Project Description"?: string;
+  "Project Tech"?: string;
+  "Project Links"?: string;
+  "Project GitHub"?: string;
+  "Project Live Preview"?: string;
   Certifications?: string;
-  'Certification Issuer'?: string;
-  'Certification Year'?: string | number;
+  "Certification Issuer"?: string;
+  "Certification Year"?: string | number;
+  "Certification Link"?: string;
+  "Research Publications"?: string;
+  "Research Journal"?: string;
+  "Research Year"?: string | number;
+  "Research Authors"?: string;
+  "Research Paper URL"?: string;
   Email?: string;
   email?: string;
   Phone?: string;
   phone?: string;
-  'Resume URL'?: string;
+  GitHub?: string;
+  github?: string;
+  LinkedIn?: string;
+  linkedin?: string;
+  Portfolio?: string;
+  portfolio?: string;
+  "Resume URL"?: string;
   resumeUrl?: string;
-  'Resume Link'?: string;
-  'Profile Photo'?: string;
+  "Resume Link"?: string;
+  "Profile Photo"?: string;
   profilePhoto?: string;
   Tags?: string;
   tags?: string;
+  "Languages Known"?: string;
+  languagesKnown?: string;
+  "Preferred Location"?: string;
+  "Preferred Job Type"?: string;
+  "Preferred Role"?: string;
+  "Preferred Industries"?: string;
+  Overview?: string;
+  overview?: string;
 }
+
+const splitAndTrim = (str: string | undefined, delimiter = ","): string[] => {
+  if (!str) return [];
+  return str
+    .toString()
+    .split(delimiter)
+    .map((item) => item.trim())
+    .filter(Boolean);
+};
+
+const parseObjectArray = <T>(
+  keys: (keyof RawStudentData)[],
+  rawData: RawStudentData,
+  constructor: (parts: string[]) => T
+): T[] => {
+  const firstFieldValue = rawData[keys[0]];
+  if (!firstFieldValue) return [];
+
+  const arrays = keys.map((key) => splitAndTrim(rawData[key]?.toString(), "|"));
+  const numItems = Math.max(...arrays.map((arr) => arr.length));
+  if (numItems === 0) return [];
+
+  const result: T[] = [];
+  for (let i = 0; i < numItems; i++) {
+    const parts = arrays.map((arr) => arr[i] || "");
+    result.push(constructor(parts));
+  }
+  return result;
+};
 
 // Helper function to parse CSV/Excel data
 export const parseStudentData = (rawData: RawStudentData) => {
@@ -161,38 +266,141 @@ export const parseStudentData = (rawData: RawStudentData) => {
     semester: parseInt(String(rawData.Semester || rawData.semester)) || 1,
     specialization: rawData.Specialization || rawData.specialization,
     cgpa: parseFloat(String(rawData.CGPA || rawData.cgpa)) || 0,
-    achievements: (rawData.Achievements || rawData.achievements || "")
-      .toString().split(",").map((a: string) => a.trim()).filter(Boolean),
-    skills: (rawData.Skills || rawData.skills || "")
-      .toString().split(",").map((s: string) => s.trim()).filter(Boolean),
-    experience: rawData.Experience ? [{
-      company: rawData.Experience,
-      role: rawData["Experience Role"] || "Intern",
-      duration: rawData["Experience Duration"] || "3 months",
-      description: rawData["Experience Description"] || ""
-    }] : [],
-    projects: rawData.Projects ? [{
-      title: rawData.Projects,
-      description: rawData["Project Description"] || "",
-      techStack: (rawData["Project Tech"] || "").toString()
-        .split(",").map((t: string) => t.trim()).filter(Boolean),
-      links: (rawData["Project Links"] || "").toString()
-        .split(",").map((l: string) => l.trim()).filter(Boolean)
-    }] : [],
-    certifications: rawData.Certifications ? [{
-      name: rawData.Certifications,
-      issuer: rawData["Certification Issuer"] || "Unknown",
-      year: parseInt(String(rawData["Certification Year"])) || new Date().getFullYear()
-    }] : [],
+    previousSemesterCgpa:
+      parseFloat(
+        String(
+          rawData["Previous Semester CGPA"] || rawData.previousSemesterCgpa
+        )
+      ) || undefined,
+
+    achievements: parseAchievements(
+      rawData.Achievements || rawData.achievements || "", 
+      rawData['Achievement Descriptions']
+    ),
+
+    skills: splitAndTrim(rawData.Skills || rawData.skills),
+
+    experience: parseObjectArray(
+      [
+        "Experience",
+        "Experience Role",
+        "Experience Duration",
+        "Experience Description",
+        "Experience Certificate",
+      ],
+      rawData,
+      ([company, role, duration, description, certificate]) => ({
+        company,
+        role,
+        duration,
+        description,
+        certificate,
+      })
+    ),
+
+    projects: parseObjectArray(
+      [
+        "Projects",
+        "Project Description",
+        "Project Tech",
+        "Project GitHub",
+        "Project Live Preview",
+      ],
+      rawData,
+      ([title, description, tech, githubUrl, livePreview]) => ({
+        title,
+        description,
+        techStack: splitAndTrim(tech),
+        githubUrl,
+        livePreview,
+      })
+    ),
+
+    certifications: parseObjectArray(
+      [
+        "Certifications",
+        "Certification Issuer",
+        "Certification Year",
+        "Certification Link",
+      ],
+      rawData,
+      ([name, issuer, year, certificate]) => ({
+        name,
+        issuer,
+        year: parseInt(year) || new Date().getFullYear(),
+        certificate,
+      })
+    ),
+
+    researchPublications: parseObjectArray(
+      [
+        "Research Publications",
+        "Research Journal",
+        "Research Year",
+        "Research Authors",
+        "Research Paper URL",
+      ],
+      rawData,
+      ([title, journal, year, authors, paperUrl]) => ({
+        title,
+        journal,
+        year: parseInt(year) || new Date().getFullYear(),
+        authors: splitAndTrim(authors),
+        paperUrl,
+      })
+    ),
+
     contact: {
       email: rawData.Email || rawData.email || "",
-      phone: rawData.Phone || rawData.phone || ""
+      phone: rawData.Phone || rawData.phone || "",
     },
-    resumeUrl: rawData["Resume URL"] || rawData.resumeUrl || rawData["Resume Link"] || "",
+    socialLinks: {
+      github: rawData.GitHub || rawData.github || undefined,
+      linkedin: rawData.LinkedIn || rawData.linkedin || undefined,
+      portfolio: rawData.Portfolio || rawData.portfolio || undefined,
+    },
+    resumeUrl:
+      rawData["Resume URL"] ||
+      rawData.resumeUrl ||
+      rawData["Resume Link"] ||
+      "",
     profilePhoto: rawData["Profile Photo"] || rawData.profilePhoto || "",
-    tags: (rawData.Tags || rawData.tags || "").toString()
-      .split(",").map((t: string) => t.trim()).filter(Boolean)
+    tags: splitAndTrim(rawData.Tags || rawData.tags),
+    languagesKnown: splitAndTrim(
+      rawData["Languages Known"] || rawData.languagesKnown
+    ),
+    preferences: {
+      location: splitAndTrim(rawData["Preferred Location"]),
+      jobType: splitAndTrim(rawData["Preferred Job Type"]),
+      role: splitAndTrim(rawData["Preferred Role"]),
+      industries: splitAndTrim(rawData["Preferred Industries"]),
+    },
+    overview: rawData.Overview || rawData.overview || "",
   };
+};
+
+const parseAchievements = (
+  achievementsStr: string,
+  descriptionsStr?: string
+) => {
+  const achievements = achievementsStr
+    .toString()
+    .split(",")
+    .map((a) => a.trim())
+    .filter(Boolean);
+  const descriptions =
+    descriptionsStr
+      ?.toString()
+      .split("|")
+      .map((d) => d.trim())
+      .filter(Boolean) || [];
+
+  return achievements.map((title, index) => ({
+    title,
+    description: descriptions[index] || `Achievement: ${title}`,
+    date: undefined,
+    certificate: undefined,
+  }));
 };
 
 // Validate student data before saving
@@ -238,7 +446,7 @@ export const validateStudentData = (student: StudentData) => {
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 };
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Student from "@/models/Student";
 import { validateAdminAuthentication } from "@/lib/utils";
+import mongoose from "mongoose";
 
 // CREATE new student
 export async function POST(request: NextRequest) {
@@ -17,25 +18,6 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const studentData = await request.json();
 
-    // Validate required fields
-    const requiredFields = [
-      "name",
-      "branch",
-      "batch",
-      "semester",
-      "specialization",
-      "cgpa",
-      "contact",
-    ];
-    for (const field of requiredFields) {
-      if (!studentData[field]) {
-        return NextResponse.json(
-          { success: false, error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
-      }
-    }
-
     const student = new Student(studentData);
     await student.save();
 
@@ -46,6 +28,12 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("❌ Create student error:", error);
+    if (error instanceof mongoose.Error.ValidationError) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }
@@ -80,35 +68,33 @@ export async function PUT(request: NextRequest) {
       errors: [] as Array<{ index: number; student: string; error: string }>,
     };
 
-    for (let i = 0; i < students.length; i++) {
+    await Promise.all(students.map(async (studentData, i) => {
       try {
-        const studentData = students[i];
+        // Validate required fields for this specific student before DB query
+        if (!studentData.name || !studentData.batch || !studentData.contact?.email) {
+           throw new Error("Missing required fields: name, batch, and contact.email are required to identify a student.");
+        }
 
-        // Check if student exists by email or name+batch
         const existingStudent = await Student.findOne({
-          $or: [
-            { "contact.email": studentData.contact?.email },
-            { name: studentData.name, batch: studentData.batch },
-          ],
+           // Using email as the primary unique identifier
+          "contact.email": studentData.contact.email,
         });
 
         if (existingStudent) {
-          // Update existing student
-          await Student.findByIdAndUpdate(existingStudent._id, studentData);
+          await Student.findByIdAndUpdate(existingStudent._id, studentData, { runValidators: true });
           results.updated++;
         } else {
-          // Create new student
           await Student.create(studentData);
           results.created++;
         }
       } catch (error) {
         results.errors.push({
           index: i,
-          student: students[i].name || "Unknown",
-          error: error instanceof Error ? error.message : "Unknown error",
+          student: studentData.name || "Unknown",
+          error: error instanceof Error ? error.message : "An unknown error occurred",
         });
       }
-    }
+    }));
 
     return NextResponse.json({
       success: true,

@@ -1,4 +1,3 @@
-// scripts/seed.ts
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import path from "path";
@@ -66,7 +65,20 @@ const seed = async () => {
         semester: 7,
         specialization: "AI/ML",
         cgpa: 9.1,
-        achievements: ["Batch Topper", "Hackathon Winner", "National Level Achievement"],
+        previousSemesterCgpa: 8.9,
+        overview: "AI/ML enthusiast with experience in building intelligent systems. Built a Gujarati TTS system and loves exploring core Machine Learning concepts.",
+        achievements: [
+          {
+            title: "Smart India Hackathon Finalist",
+            description: "Finalist in Smart India Hackathon 2024 for developing an AI-powered educational platform",
+            date: "Coimbatore, 2024"
+          },
+          {
+            title: "#1 at Breach 25 FinTech Hackathon",
+            description: "Won first place in FinTech hackathon for developing a blockchain-based payment solution",
+            date: "Gandhinagar, 2025"
+          }
+        ],
         skills: ["Python", "TensorFlow", "NLP", "Machine Learning", "React", "Node.js"],
         experience: [
           {
@@ -79,391 +91,388 @@ const seed = async () => {
         projects: [
           {
             title: "Gujarati TTS System",
-            description: "Rule-based Gujarati text-to-speech engine deployed as serverless API",
+            description: "Rule-based Gujarati text-to-speech engine deployed as serverless API.",
             techStack: ["Machine Learning", "Python", "AWS Lambda"],
-            links: ["https://github.com/aarav/gujarati-tts"]
+            links: ["https://github.com/aarav/gujarati-tts"],
+            githubUrl: "https://github.com/aarav/gujarati-tts",
+            livePreview: "https://gujarati-tts.vercel.app"
           },
           {
             title: "E-commerce Site (MERN)",
-            description: "Full-stack e-commerce site with payments and admin dashboard",
+            description: "Full-stack e-commerce site with payments and admin dashboard.",
             techStack: ["React", "Node.js", "MongoDB"],
-            links: ["https://github.com/aarav/ecommerce-mern"]
+            links: ["https://github.com/aarav/ecommerce-mern"],
+            githubUrl: "https://github.com/aarav/ecommerce-mern"
           }
         ],
         certifications: [
-          { name: "AWS Cloud Practitioner", issuer: "Amazon (2024)", year: 2024 },
-          { name: "TensorFlow Developer Certificate", issuer: "Google (2023)", year: 2023 }
+          { 
+            name: "AWS Cloud Practitioner", 
+            issuer: "Amazon", 
+            year: 2024,
+            certificate: "https://aws.com/certificates/aarav-aws"
+          },
+          { 
+            name: "TensorFlow Developer Certificate", 
+            issuer: "Google", 
+            year: 2023,
+            certificate: "https://tensorflow.org/certificates/aarav-tf"
+          }
+        ],
+        researchPublications: [
+          {
+            title: "Gujarati TTS: Rule-based Approach",
+            journal: "IEEE Workshop 2024",
+            year: 2024,
+            authors: ["Aarav Patel", "Dr. Smith"],
+            paperUrl: "https://ieee.org/papers/gujarati-tts"
+          }
         ],
         contact: { email: "aaravpatel@gmail.com", phone: "+91 9123456789" },
+        socialLinks: {
+          github: "https://github.com/aaravpatel",
+          linkedin: "https://linkedin.com/in/aaravpatel",
+          portfolio: "https://aaravpatel.dev"
+        },
         resumeUrl: "https://drive.google.com/file/d/sample-resume-aarav/view",
         profilePhoto: "https://randomuser.me/api/portraits/men/32.jpg",
-        tags: ["AI/ML", "High CGPA", "Hackathon Winner"]
+        tags: ["AI/ML", "High CGPA", "Hackathon Winner"],
+        languagesKnown: ["English", "Hindi", "Gujarati"],
+        preferences: {
+          location: ["Ahmedabad", "Mumbai", "Bangalore"],
+          jobType: ["Full-time", "Internship"],
+          role: ["Software Engineer", "ML Engineer", "Data Scientist"],
+          industries: ["Technology", "AI/ML", "FinTech"]
+        }
       },
       {
         name: "Priya Sharma",
-        branch: "Information Technology",
+        branch: "Computer Science & Engineering",
         batch: "2021-25",
         semester: 8,
-        specialization: "Cybersecurity",
+        specialization: "Web Development",
         cgpa: 8.7,
-        achievements: ["CTF Finalist", "Research Paper Published"],
-        skills: ["Ethical Hacking", "Networking", "Python", "Cryptography", "Linux"],
+        previousSemesterCgpa: 8.5,
+        overview: "Full-stack developer passionate about creating scalable web applications and user-friendly interfaces.",
+        achievements: [
+          {
+            title: "Best Final Year Project",
+            description: "Won best project award for developing a real-time collaboration platform",
+            date: "2024"
+          }
+        ],
+        skills: ["JavaScript", "React", "Node.js", "MongoDB", "AWS", "Docker"],
         experience: [
           {
-            company: "SecureNet Solutions",
-            role: "Security Analyst Intern",
-            duration: "Jan 2024 - May 2024",
-            description: "Conducted vulnerability assessments and penetration testing"
+            company: "WebTech Solutions",
+            role: "Frontend Developer Intern",
+            duration: "Dec 2023 - Mar 2024",
+            description: "Developed responsive web applications using React and improved user experience"
           }
         ],
         projects: [
           {
-            title: "Network Vulnerability Scanner",
-            description: "Custom tool for automated network security assessment",
-            techStack: ["Python", "Nmap", "Scapy"],
-            links: ["https://github.com/priya/vuln-scanner"]
+            title: "Real-time Chat Application",
+            description: "Full-stack chat app with real-time messaging and file sharing capabilities",
+            techStack: ["React", "Socket.io", "Node.js", "MongoDB"],
+            links: ["https://github.com/priya/chat-app"],
+            githubUrl: "https://github.com/priya/chat-app",
+            livePreview: "https://chat-app-priya.vercel.app"
           }
         ],
         certifications: [
-          { name: "Certified Ethical Hacker (CEH)", issuer: "EC-Council", year: 2024 }
+          {
+            name: "React Developer Certification",
+            issuer: "Meta",
+            year: 2024,
+            certificate: "https://meta.com/certificates/priya-react"
+          }
         ],
-        contact: { email: "priya.sharma@gmail.com", phone: "+91 9876543210" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-priya/view",
-        profilePhoto: "https://randomuser.me/api/portraits/women/44.jpg",
-        tags: ["Cybersecurity", "Research"]
+        researchPublications: [],
+        contact: { email: "priya.sharma@student.gls.edu.in", phone: "+91 9876543210" },
+        socialLinks: {
+          github: "https://github.com/priyasharma",
+          linkedin: "https://linkedin.com/in/priyasharma"
+        },
+        resumeUrl: "https://drive.google.com/file/d/priya-resume/view",
+        profilePhoto: "https://randomuser.me/api/portraits/women/45.jpg",
+        tags: ["Web Development", "Full Stack"],
+        languagesKnown: ["English", "Hindi"],
+        preferences: {
+          location: ["Delhi", "Gurgaon", "Noida"],
+          jobType: ["Full-time"],
+          role: ["Frontend Developer", "Full Stack Developer"],
+          industries: ["Technology", "E-commerce", "EdTech"]
+        }
       },
       {
-        name: "Rohan Kumar",
+        name: "Krish Dobariya",
         branch: "Computer Science & Engineering",
-        batch: "2022-26",
-        semester: 6,
-        specialization: "Full Stack Development",
-        cgpa: 8.9,
-        achievements: ["Open Source Contributor", "Hackathon Finalist"],
-        skills: ["JavaScript", "React", "Node.js", "MongoDB", "Docker", "AWS"],
+        batch: "2021-25",
+        semester: 7,
+        specialization: "AI/ML",
+        cgpa: 9.3,
+        previousSemesterCgpa: 9.1,
+        overview: "Machine Learning enthusiast with strong programming skills and competition experience.",
+        achievements: [
+          {
+            title: "Kaggle Competition Winner",
+            description: "Won first place in Kaggle machine learning competition for sentiment analysis",
+            date: "2024"
+          }
+        ],
+        skills: ["Python", "Deep Learning", "TensorFlow", "PyTorch", "Data Analysis"],
         experience: [
           {
-            company: "TechStart Inc",
-            role: "Frontend Developer Intern",
-            duration: "May 2024 - Jul 2024",
-            description: "Developed responsive web applications using React and TypeScript"
+            company: "AI Labs",
+            role: "ML Intern",
+            duration: "Mar 2024 - Jun 2024",
+            description: "Worked on NLP models for text classification and sentiment analysis"
           }
         ],
         projects: [
           {
-            title: "Task Management System",
-            description: "Real-time collaborative task management with team features",
-            techStack: ["React", "Node.js", "Socket.io", "MongoDB"],
-            links: ["https://github.com/rohan/task-manager", "https://taskapp.demo.com"]
-          },
-          {
-            title: "Weather Dashboard",
-            description: "Weather forecasting app with location-based predictions",
-            techStack: ["JavaScript", "APIs", "Chart.js"],
-            links: ["https://github.com/rohan/weather-app"]
+            title: "Chatbot System",
+            description: "AI-powered chatbot for customer service with natural language understanding",
+            techStack: ["Python", "TensorFlow", "Flask"],
+            links: ["https://github.com/krish/chatbot"],
+            githubUrl: "https://github.com/krish/chatbot"
           }
         ],
         certifications: [
-          { name: "React Developer", issuer: "Meta", year: 2023 }
+          {
+            name: "Deep Learning Specialization",
+            issuer: "Coursera",
+            year: 2024,
+            certificate: "https://coursera.org/certificates/krish-dl"
+          }
         ],
-        contact: { email: "rohan.dev@gmail.com", phone: "+91 8765432109" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-rohan/view",
-        profilePhoto: "https://randomuser.me/api/portraits/men/25.jpg",
-        tags: ["Full Stack", "Open Source"]
+        researchPublications: [],
+        contact: { email: "krish.dobariya@student.gls.edu.in", phone: "+91 9000000010" },
+        socialLinks: {
+          github: "https://github.com/krishdobariya",
+          linkedin: "https://linkedin.com/in/krishdobariya"
+        },
+        resumeUrl: "https://drive.google.com/file/d/krish-resume/view",
+        profilePhoto: "https://randomuser.me/api/portraits/men/20.jpg",
+        tags: ["AI/ML", "High CGPA", "Competition Winner"],
+        languagesKnown: ["English", "Hindi", "Gujarati"],
+        preferences: {
+          location: ["Bangalore", "Hyderabad", "Pune"],
+          jobType: ["Full-time", "Internship"],
+          role: ["ML Engineer", "Data Scientist", "AI Developer"],
+          industries: ["Technology", "AI/ML", "Research"]
+        }
       },
       {
         name: "Anjali Singh",
-        branch: "Information Technology",
+        branch: "Computer Science & Engineering",
         batch: "2023-27",
         semester: 4,
         specialization: "Data Science",
         cgpa: 9.3,
-        achievements: ["Dean's List", "Research Assistant"],
+        previousSemesterCgpa: 9.0,
+        overview: "Data Science enthusiast with strong analytical skills and research experience.",
+        achievements: [
+          {
+            title: "Dean's List",
+            description: "Consistently maintained high academic performance and made it to Dean's List",
+            date: "2024"
+          },
+          {
+            title: "Research Assistant",
+            description: "Selected as research assistant for data analytics project under faculty guidance",
+            date: "2024"
+          }
+        ],
         skills: ["Python", "R", "SQL", "Tableau", "Machine Learning", "Statistics"],
         experience: [],
         projects: [
           {
             title: "Customer Churn Prediction",
-            description: "ML model to predict customer churn for telecom industry",
+            description: "ML model to predict customer churn for telecom industry using various algorithms",
             techStack: ["Python", "Scikit-learn", "Pandas"],
-            links: ["https://github.com/anjali/churn-prediction"]
+            links: ["https://github.com/anjali/churn-prediction"],
+            githubUrl: "https://github.com/anjali/churn-prediction"
           },
           {
             title: "Sales Analytics Dashboard",
-            description: "Interactive dashboard for sales performance analysis",
+            description: "Interactive dashboard for sales performance analysis with real-time data visualization",
             techStack: ["Tableau", "SQL", "Python"],
-            links: ["https://public.tableau.com/anjali/sales-dashboard"]
+            links: ["https://public.tableau.com/anjali/sales-dashboard"],
+            livePreview: "https://public.tableau.com/anjali/sales-dashboard"
           }
         ],
         certifications: [
-          { name: "Google Data Analytics", issuer: "Google", year: 2024 }
+          {
+            name: "Google Data Analytics",
+            issuer: "Google",
+            year: 2024,
+            certificate: "https://google.com/certificates/anjali-analytics"
+          }
         ],
+        researchPublications: [],
         contact: { email: "anjali.ds@gmail.com", phone: "+91 7654321098" },
+        socialLinks: {
+          github: "https://github.com/anjalisingh",
+          linkedin: "https://linkedin.com/in/anjalisingh"
+        },
         resumeUrl: "https://drive.google.com/file/d/sample-resume-anjali/view",
         profilePhoto: "https://randomuser.me/api/portraits/women/68.jpg",
-        tags: ["Data Science", "High CGPA", "Research"]
+        tags: ["Data Science", "High CGPA", "Research"],
+        languagesKnown: ["English", "Hindi"],
+        preferences: {
+          location: ["Mumbai", "Pune", "Delhi"],
+          jobType: ["Full-time", "Internship"],
+          role: ["Data Analyst", "Data Scientist", "Business Analyst"],
+          industries: ["Technology", "Finance", "Healthcare"]
+        }
       },
       {
-        name: "Vikash Patel",
-        branch: "Computer Science & Engineering",
-        batch: "2021-25",
-        semester: 8,
-        specialization: "Mobile Development",
-        cgpa: 8.4,
-        achievements: ["App Store Featured", "Entrepreneurship Award"],
-        skills: ["Flutter", "Dart", "Firebase", "React Native", "iOS", "Android"],
-        experience: [
-          {
-            company: "Mobile Solutions Ltd",
-            role: "Mobile App Developer",
-            duration: "Jun 2023 - Present",
-            description: "Developed cross-platform mobile applications for various clients"
-          }
-        ],
-        projects: [
-          {
-            title: "Food Delivery App",
-            description: "Complete food delivery solution with real-time tracking",
-            techStack: ["Flutter", "Firebase", "Google Maps API"],
-            links: ["https://github.com/vikash/food-delivery", "https://play.google.com/store/apps/foodie"]
-          },
-          {
-            title: "Fitness Tracker",
-            description: "Health and fitness tracking app with social features",
-            techStack: ["React Native", "Node.js", "MongoDB"],
-            links: ["https://github.com/vikash/fitness-tracker"]
-          }
-        ],
-        certifications: [
-          { name: "Flutter Developer", issuer: "Google", year: 2023 }
-        ],
-        contact: { email: "vikash.mobile@gmail.com", phone: "+91 9234567890" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-vikash/view",
-        profilePhoto: "https://randomuser.me/api/portraits/men/47.jpg",
-        tags: ["Mobile Development", "Entrepreneurship"]
-      },
-      {
-        name: "Divya Agrawal",
-        branch: "Information Technology",
-        batch: "2022-26",
-        semester: 6,
-        specialization: "Cloud Computing",
-        cgpa: 8.8,
-        achievements: ["AWS Hackathon Winner", "Technical Writer"],
-        skills: ["AWS", "Docker", "Kubernetes", "Python", "DevOps", "Terraform"],
-        experience: [
-          {
-            company: "CloudTech Systems",
-            role: "Cloud Engineering Intern",
-            duration: "Dec 2023 - Mar 2024",
-            description: "Worked on container orchestration and CI/CD pipeline setup"
-          }
-        ],
-        projects: [
-          {
-            title: "Microservices Architecture",
-            description: "Scalable microservices platform using Docker and Kubernetes",
-            techStack: ["Docker", "Kubernetes", "Python", "Redis"],
-            links: ["https://github.com/divya/microservices-platform"]
-          },
-          {
-            title: "Infrastructure as Code",
-            description: "Automated AWS infrastructure provisioning using Terraform",
-            techStack: ["Terraform", "AWS", "Python"],
-            links: ["https://github.com/divya/terraform-aws"]
-          }
-        ],
-        certifications: [
-          { name: "AWS Solutions Architect Associate", issuer: "Amazon", year: 2024 },
-          { name: "Docker Certified Associate", issuer: "Docker Inc", year: 2023 }
-        ],
-        contact: { email: "divya.cloud@gmail.com", phone: "+91 8123456789" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-divya/view",
-        profilePhoto: "https://randomuser.me/api/portraits/women/26.jpg",
-        tags: ["Cloud Computing", "DevOps", "Hackathon Winner"]
-      },
-      {
-        name: "Arjun Mehta",
-        branch: "Computer Science & Engineering",
-        batch: "2023-27",
-        semester: 4,
-        specialization: "Game Development",
-        cgpa: 8.2,
-        achievements: ["Game Jam Winner", "Unity Certified"],
-        skills: ["Unity", "C#", "Blender", "Game Design", "VR/AR", "3D Modeling"],
-        experience: [],
-        projects: [
-          {
-            title: "VR Educational Game",
-            description: "Virtual reality game for learning Indian history",
-            techStack: ["Unity", "C#", "Oculus SDK"],
-            links: ["https://github.com/arjun/vr-history-game"]
-          },
-          {
-            title: "2D Platformer Game",
-            description: "Indie platformer game with pixel art graphics",
-            techStack: ["Unity", "C#", "Photoshop"],
-            links: ["https://github.com/arjun/platformer-game", "https://arjun-games.itch.io/platformer"]
-          }
-        ],
-        certifications: [
-          { name: "Unity Certified User", issuer: "Unity Technologies", year: 2023 }
-        ],
-        contact: { email: "arjun.gamedev@gmail.com", phone: "+91 7012345678" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-arjun/view",
-        profilePhoto: "https://randomuser.me/api/portraits/men/15.jpg",
-        tags: ["Game Development", "VR/AR"]
-      },
-      {
-        name: "Sneha Reddy",
-        branch: "Information Technology",
-        batch: "2021-25",
-        semester: 8,
-        specialization: "UI/UX Design",
-        cgpa: 8.6,
-        achievements: ["Design Competition Winner", "Behance Featured"],
-        skills: ["Figma", "Adobe XD", "Photoshop", "Illustrator", "User Research", "Prototyping"],
-        experience: [
-          {
-            company: "Design Studio Pro",
-            role: "UI/UX Designer Intern",
-            duration: "Aug 2023 - Dec 2023",
-            description: "Designed user interfaces for mobile and web applications"
-          }
-        ],
-        projects: [
-          {
-            title: "E-learning Platform Design",
-            description: "Complete UI/UX design for online learning platform",
-            techStack: ["Figma", "User Research", "Prototyping"],
-            links: ["https://www.figma.com/sneha/elearning-design", "https://www.behance.net/sneha/projects"]
-          },
-          {
-            title: "Banking App Redesign",
-            description: "Mobile banking app interface redesign focusing on accessibility",
-            techStack: ["Adobe XD", "User Testing", "Wireframing"],
-            links: ["https://www.behance.net/sneha/banking-redesign"]
-          }
-        ],
-        certifications: [
-          { name: "Google UX Design", issuer: "Google", year: 2023 }
-        ],
-        contact: { email: "sneha.design@gmail.com", phone: "+91 6901234567" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-sneha/view",
-        profilePhoto: "https://randomuser.me/api/portraits/women/89.jpg",
-        tags: ["UI/UX Design", "Creative"]
-      },
-      {
-        name: "Karthik Nair",
+        name: "Masoom Patel",
         branch: "Computer Science & Engineering",
         batch: "2022-26",
         semester: 6,
-        specialization: "Blockchain",
-        cgpa: 8.5,
-        achievements: ["Blockchain Hackathon Winner", "Research Publication"],
-        skills: ["Solidity", "Web3.js", "Ethereum", "Smart Contracts", "DeFi", "JavaScript"],
+        specialization: "Data Science",
+        cgpa: 9.2,
+        previousSemesterCgpa: 8.8,
+        overview: "Data Science student with published research and hands-on experience in data analysis.",
+        achievements: [
+          {
+            title: "Paper Published",
+            description: "Published research paper on machine learning applications in education",
+            date: "2024"
+          }
+        ],
+        skills: ["Python", "R", "Data Analysis", "Machine Learning", "Statistical Modeling"],
         experience: [
           {
-            company: "CryptoTech Labs",
-            role: "Blockchain Developer Intern",
+            company: "Analytics Co.",
+            role: "Data Intern",
+            duration: "May 2024 - Jul 2024",
+            description: "Analyzed student datasets and created predictive models for academic performance"
+          }
+        ],
+        projects: [
+          {
+            title: "Placement Prediction Model",
+            description: "ML model for predicting student placement outcomes based on academic and skill data",
+            techStack: ["Python", "Scikit-learn", "Pandas"],
+            links: ["https://github.com/masoom/placement-ml"],
+            githubUrl: "https://github.com/masoom/placement-ml"
+          }
+        ],
+        certifications: [
+          {
+            name: "Data Science Specialization",
+            issuer: "Coursera",
+            year: 2024,
+            certificate: "https://coursera.org/certificates/masoom-ds"
+          }
+        ],
+        researchPublications: [
+          {
+            title: "ML Applications in Educational Data Mining",
+            journal: "International Journal of Educational Technology",
+            year: 2024,
+            authors: ["Masoom Patel", "Dr. Johnson"],
+            paperUrl: "https://journal.edu/papers/masoom-ml-education"
+          }
+        ],
+        contact: { email: "masoom.patel@student.gls.edu.in", phone: "+91 9000000004" },
+        socialLinks: {
+          github: "https://github.com/masoompatel",
+          linkedin: "https://linkedin.com/in/masoompatel"
+        },
+        resumeUrl: "https://drive.google.com/file/d/masoom-resume/view",
+        profilePhoto: "https://randomuser.me/api/portraits/men/14.jpg",
+        tags: ["Data Science", "Research", "Published Author"],
+        languagesKnown: ["English", "Hindi", "Gujarati"],
+        preferences: {
+          location: ["Ahmedabad", "Bangalore", "Chennai"],
+          jobType: ["Full-time", "Research"],
+          role: ["Data Scientist", "Research Analyst", "ML Engineer"],
+          industries: ["Technology", "Education", "Research"]
+        }
+      },
+      {
+        name: "Rahul Gupta",
+        branch: "Computer Science & Engineering",
+        batch: "2020-24",
+        semester: 8,
+        specialization: "Software Development",
+        cgpa: 8.9,
+        previousSemesterCgpa: 8.7,
+        overview: "Software developer with experience in building scalable applications and cloud technologies.",
+        achievements: [
+          {
+            title: "Coding Competition Winner",
+            description: "Won inter-college coding competition for algorithmic problem solving",
+            date: "2023"
+          }
+        ],
+        skills: ["Java", "Spring Boot", "Microservices", "Docker", "Kubernetes", "AWS"],
+        experience: [
+          {
+            company: "Cloud Solutions Inc",
+            role: "Backend Developer Intern",
             duration: "Jan 2024 - Apr 2024",
-            description: "Developed smart contracts and DeFi protocols"
+            description: "Developed microservices architecture and implemented cloud-based solutions"
           }
         ],
         projects: [
           {
-            title: "Decentralized Voting System",
-            description: "Blockchain-based voting platform ensuring transparency",
-            techStack: ["Solidity", "Web3.js", "React", "Ethereum"],
-            links: ["https://github.com/karthik/voting-dapp"]
-          },
-          {
-            title: "NFT Marketplace",
-            description: "Complete NFT trading platform with wallet integration",
-            techStack: ["Solidity", "React", "IPFS", "MetaMask"],
-            links: ["https://github.com/karthik/nft-marketplace", "https://karthik-nfts.vercel.app"]
+            title: "E-learning Platform",
+            description: "Comprehensive e-learning platform with video streaming and assessment features",
+            techStack: ["Java", "Spring Boot", "React", "MySQL"],
+            links: ["https://github.com/rahul/elearning"],
+            githubUrl: "https://github.com/rahul/elearning",
+            livePreview: "https://elearning-rahul.herokuapp.com"
           }
         ],
         certifications: [
-          { name: "Certified Blockchain Developer", issuer: "Blockchain Council", year: 2024 }
-        ],
-        contact: { email: "karthik.blockchain@gmail.com", phone: "+91 5890123456" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-karthik/view",
-        profilePhoto: "https://randomuser.me/api/portraits/men/73.jpg",
-        tags: ["Blockchain", "Web3", "Hackathon Winner"]
-      },
-      {
-        name: "Meera Joshi",
-        branch: "Information Technology",
-        batch: "2023-27",
-        semester: 4,
-        specialization: "AI/ML",
-        cgpa: 9.0,
-        achievements: ["Dean's List", "Machine Learning Competition Winner"],
-        skills: ["Python", "PyTorch", "Computer Vision", "NLP", "Deep Learning", "OpenCV"],
-        experience: [],
-        projects: [
           {
-            title: "Medical Image Analysis",
-            description: "Deep learning model for detecting diseases from X-ray images",
-            techStack: ["Python", "PyTorch", "OpenCV", "Medical Imaging"],
-            links: ["https://github.com/meera/medical-ai"]
-          },
-          {
-            title: "Chatbot for Mental Health",
-            description: "AI-powered chatbot providing mental health support",
-            techStack: ["Python", "NLP", "Transformers", "Flask"],
-            links: ["https://github.com/meera/mental-health-bot"]
+            name: "AWS Solutions Architect",
+            issuer: "Amazon",
+            year: 2024,
+            certificate: "https://aws.com/certificates/rahul-architect"
           }
         ],
-        certifications: [
-          { name: "Deep Learning Specialization", issuer: "Coursera", year: 2024 }
-        ],
-        contact: { email: "meera.ai@gmail.com", phone: "+91 4789012345" },
-        resumeUrl: "https://drive.google.com/file/d/sample-resume-meera/view",
-        profilePhoto: "https://randomuser.me/api/portraits/women/32.jpg",
-        tags: ["AI/ML", "High CGPA", "Healthcare Tech"]
+        researchPublications: [],
+        contact: { email: "rahul.gupta@student.gls.edu.in", phone: "+91 9876543211" },
+        socialLinks: {
+          github: "https://github.com/rahulgupta",
+          linkedin: "https://linkedin.com/in/rahulgupta"
+        },
+        resumeUrl: "https://drive.google.com/file/d/rahul-resume/view",
+        profilePhoto: "https://randomuser.me/api/portraits/men/55.jpg",
+        tags: ["Software Development", "Cloud", "Backend"],
+        languagesKnown: ["English", "Hindi"],
+        preferences: {
+          location: ["Mumbai", "Bangalore", "Hyderabad"],
+          jobType: ["Full-time"],
+          role: ["Software Engineer", "Backend Developer", "Cloud Engineer"],
+          industries: ["Technology", "Cloud Computing", "EdTech"]
+        }
       }
     ];
 
     const createdStudents = await Student.insertMany(students);
-    console.log(`✅ ${createdStudents.length} students seeded successfully`);
+    console.log(`✅ ${createdStudents.length} students seeded successfully!`);
 
-    // --- Create indexes for better performance ---
-    console.log("📊 Creating database indexes...");
-    await Student.createIndexes();
-    await Recruiter.createIndexes();
-    console.log("✅ Database indexes created");
-
-    // --- Display summary ---
-    console.log("\n🎉 Seeding completed successfully!");
-    console.log("📈 Database Statistics:");
-    console.log(`   • Students: ${createdStudents.length}`);
-    console.log(`   • Recruiters: ${createdRecruiters.length}`);
-    console.log(`   • Specializations: ${[...new Set(students.map(s => s.specialization))].join(', ')}`);
-    console.log(`   • Branches: ${[...new Set(students.map(s => s.branch))].join(', ')}`);
+    // Log summary
+    console.log("\n📊 Seed Summary:");
+    console.log(`   - Recruiters: ${createdRecruiters.length}`);
+    console.log(`   - Students: ${createdStudents.length}`);
+    console.log("\n🎉 Database seeded successfully!");
     
-    console.log("\n🔑 Test Login Credentials:");
-    console.log("   • admin123 (Tech Corp)");
-    console.log("   • recruiter2024 (Innovation Labs)"); 
-    console.log("   • startup123 (Startup Hub)");
-
   } catch (error) {
     console.error("❌ Seeding failed:", error);
-    throw error;
   } finally {
-    await mongoose.connection.close();
-    console.log("🚪 MongoDB connection closed");
+    await mongoose.disconnect();
+    console.log("🔌 MongoDB disconnected");
+    process.exit(0);
   }
 };
 
-// Execute seeding
-seed()
-  .then(() => {
-    console.log("🎯 Seeding process completed");
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error("💥 Seeding process failed:", error);
-    process.exit(1);
-  });
+seed();
