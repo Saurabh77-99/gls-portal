@@ -90,7 +90,7 @@ export const useStudentStore = create<StudentState>((set, get) => ({
   searchQuery: '',
   searchLoading: false,
   searchError: null,
-  isGridViewSelected : false,
+  isGridViewSelected: false,
   
   fetchStudents: async () => {
     const { loading, page, hasMore } = get();
