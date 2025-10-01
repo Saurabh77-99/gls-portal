@@ -66,7 +66,7 @@ interface StudentState {
   searchQuery: string;
   searchLoading: boolean;
   searchError: string | null;
-  isGridViewSelected:boolean,
+  isGridViewSelected: boolean,
   fetchStudents: () => Promise<void>;
   goToNextStudent: () => Promise<string | null>;
   goToPrevStudent: () => string | null;
