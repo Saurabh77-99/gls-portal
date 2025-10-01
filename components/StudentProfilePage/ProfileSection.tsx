@@ -42,7 +42,7 @@ const ProfileSection = ({ name, batch, profilePhoto, branch, specialization, sem
                     }
                     {
                         socialLinks?.portfolio &&
-                        <a href={socialLinks?.linkedin} target="_blank" className="font-normal text-[16px] italic">
+                        <a href={socialLinks?.portfolio} target="_blank" className="font-normal text-[16px] italic">
                             Portfolio
                         </a>
                     }
