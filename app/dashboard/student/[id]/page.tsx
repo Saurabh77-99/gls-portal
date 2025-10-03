@@ -5,7 +5,7 @@ import { useStudentStore } from '@/store/store'
 import { useParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 
-const page = () => {
+const Page = () => {
 
     const params = useParams();
     const studentId = params.id as string
@@ -13,7 +13,7 @@ const page = () => {
         currentIndex,
         setCurrentStudentById,
         fetchStudents,
-        error } = useStudentStore() as any
+        error } = useStudentStore()
     const currentStudent = students[currentIndex]
 
     useEffect(() => {
@@ -34,4 +34,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

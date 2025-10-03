@@ -1,10 +1,32 @@
 import React from 'react'
 
-const Image = ({ src, alt, width, height, className }) => (
+type ImageProps = {
+  src: string;
+  alt: string;
+  width?: number | string;
+  height?: number | string;
+  className?: string;
+};
+
+type ProfileSectionProps = {
+    name: string;
+    batch: string;
+    profilePhoto: string;
+    branch: string;
+    specialization: string;
+    semester: number;
+    socialLinks: {
+        github?: string;
+        linkedin?: string;
+        portfolio?: string;
+    };
+}
+
+const Image = ({ src, alt, width, height, className }: ImageProps) => (
     <img src={src} alt={alt} width={width} height={height} className={className} />
 )
 
-const ProfileSection = ({ name, batch, profilePhoto, branch, specialization, semester, socialLinks }) => {
+const ProfileSection = ({ name, batch, profilePhoto, branch, specialization, semester, socialLinks }: ProfileSectionProps) => {
     return (
         <div className="flex flex-col justify-center items-start gap-6">
             <div className="flex gap-4">

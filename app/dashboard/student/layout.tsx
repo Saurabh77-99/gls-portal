@@ -1,12 +1,12 @@
 "use client"
-import Header from "@/components/StudentProfilePage/Header";
+
 import PaginationFooter from "@/components/StudentProfilePage/PaginationFooter";
 import { useStudentStore } from "@/store/store";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function StudentDetailLayout({ children }: { children: React.ReactNode }) {
-    const {setCurrentStudentById} = useStudentStore() as any
+    const {setCurrentStudentById} = useStudentStore() 
 
         const params = useParams();
         const studentId = params.id as string

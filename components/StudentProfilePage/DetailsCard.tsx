@@ -9,9 +9,9 @@ type DetailsCardProps = {
   duration?: string,
   certificateLink?: string
   role?: string
-  techStack?: []
+  techStack?: string[]
   issuer?: string
-  issueYear?: string
+  issueYear?: string | number
 }
 
 
