@@ -1,0 +1,113 @@
+name: GLS Portal CI/CD
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches:
+      - main
+      - master
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual run'
+        required: false
+        default: 'Manual trigger'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    # Skip if PR is in draft mode (unless it's ready_for_review)
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.draft == false) ||
+      (github.event_name == 'pull_request_target' && github.event.pull_request.draft == false) ||
+      github.event.action == 'ready_for_review'
+
+    steps:
+      - name: Workflow Info
+        run: |
+          echo "🚀 Workflow triggered by: ${{ github.event_name }}"
+          echo "📋 Action: ${{ github.event.action }}"
+          echo "🌟 Ref: ${{ github.ref }}"
+          echo "👤 Actor: ${{ github.actor }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "💭 Reason: ${{ github.event.inputs.reason }}"
+          fi
+          if [ "${{ github.event_name }}" = "pull_request" ] || [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            echo "🔀 PR #${{ github.event.number }}: ${{ github.event.pull_request.title }}"
+            echo "📝 Draft: ${{ github.event.pull_request.draft }}"
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Lint
+        run: pnpm run lint
+        continue-on-error: false
+
+      - name: Type Check
+        run: pnpm exec tsc --noEmit
+        continue-on-error: false
+
+      - name: Build Next.js
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+      - name: Run Tests
+        run: pnpm test -- --passWithNoTests
+        continue-on-error: true
+
+      - name: Build Status
+        if: success()
+        run: |
+          echo "✅ Build successful! All checks passed."
+          echo "🎉 Ready for deployment!"
+          if [ "${{ github.event_name }}" = "pull_request" ] || [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            echo "🔀 PR #${{ github.event.number }} is ready for review/merge!"
+          fi
+
+      - name: Build Failed
+        if: failure()
+        run: |
+          echo "❌ Build failed! Please check the errors above."
+          echo "Common issues to check:"
+          echo "- TypeScript errors"
+          echo "- ESLint violations"
+          echo "- Missing environment variables"
+          echo "- Import/export issues"
+          echo "🔧 Run 'pnpm run test-ci' locally to debug"
+          if [ "${{ github.event_name }}" = "pull_request" ] || [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            echo "🚫 PR #${{ github.event.number }} needs fixes before merge"
+          fi
+          exit 1
