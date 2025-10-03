@@ -23,6 +23,11 @@ print_error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
+# Set environment variables for build
+export NODE_ENV=production
+export MONGODB_URI="mongodb://localhost:27017/test"
+export JWT_SECRET="dummy-jwt-secret-for-build"
+
 # Step 1: Install Dependencies
 print_step "Installing dependencies"
 if pnpm install --frozen-lockfile; then
@@ -52,14 +57,12 @@ fi
 
 # Step 4: Build
 print_step "Building Next.js application"
-export NODE_ENV=production
 if pnpm run build; then
     print_success "Build completed successfully"
 else
     print_error "Build failed"
     exit 1
 fi
-
 
 echo -e "\n${GREEN}🎉 All CI/CD steps completed successfully!${NC}"
 echo "Your code is ready to be pushed to GitHub."
