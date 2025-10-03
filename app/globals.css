@@ -5,7 +5,7 @@
 /* Your custom styles after */
 
 :root {
-  --background: #ffffff;
+  --background: #FFFAFA;
   --foreground: #171717;
   
   /* Primary Colors */
@@ -128,13 +128,6 @@
   --shadow-button-inset-light: inset 2px 3px 4px rgba(255, 255, 255, 0.3), inset -2px -3px 4px rgba(0, 0, 0, 0.05);
   --shadow-button-inset-dark: inset -2px -3px 4px rgba(255, 255, 255, 0.05), inset 2px 3px 4px rgba(0, 0, 0, 0.15);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 html,
@@ -339,11 +332,4 @@ select:focus-visible {
 .bg-dots {
   background-image: radial-gradient(var(--colors-neutral-200) 2px, transparent 2px);
   background-size: 24px 24px; /* spacing between dots */
-}
-
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
