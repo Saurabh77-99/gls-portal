@@ -5,10 +5,9 @@ import type React from "react"
 import ProfileSection from "./ProfileSection"
 import DetailsCard from "./DetailsCard"
 import { Badge, SkillBadges } from "../ui/Badge"
+import { Student } from "@/store/store"
 
-const StudentDetailsPage = ({ currentStudent }: any) => {
-
-  console.log("Current student", currentStudent)
+const StudentDetailsPage = ({ currentStudent }: { currentStudent: Student }) => {
 
   return (
     <div className=" w-full bg-neutral-100 p-4 flex items-center justify-center">
@@ -154,9 +153,9 @@ const StudentDetailsPage = ({ currentStudent }: any) => {
                 key={ind}
                 type="experiance"
                 title={exp?.company}
-                duration={exp?.duration || null}
-                description={exp?.description || null}
-                certificateLink={exp?.certificateLink || null}
+                duration={exp?.duration}
+                description={exp?.description}
+                certificateLink={exp?.certificateLink}
                 role={exp?.role}
                 />
                 )
@@ -179,9 +178,9 @@ const StudentDetailsPage = ({ currentStudent }: any) => {
                 key={ind}
                 type="projects"
                 title={project?.title}
-                description={project?.description || null}
-                certificateLink={project?.certificateLink || null}
-                techStack={project?.techStack || null}
+                description={project?.description }
+                certificateLink={project?.certificateLink }
+                techStack={project?.techStack || []}
                 />
                 )
               }
@@ -203,7 +202,7 @@ const StudentDetailsPage = ({ currentStudent }: any) => {
                 key={ind}
                 type="research"
                 title={researchPublication?.title}
-                certificateLink={researchPublication?.paperUrl || null}
+                certificateLink={researchPublication?.paperUrl}
                 duration={researchPublication?.journal}
                 />
                 )
@@ -247,9 +246,9 @@ const StudentDetailsPage = ({ currentStudent }: any) => {
                 key={ind}
                 type="certifications"
                 title={certificate?.name}
-                certificateLink={certificate?.certificateLink || null}
+                certificateLink={certificate?.certificateLink }
                 issuer={certificate?.issuer}
-                issueYear={certificate.year}
+                issueYear={certificate?.year}
                 />
                 )
               }

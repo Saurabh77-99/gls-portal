@@ -28,7 +28,12 @@ export const Badge = ({
 };
 
 
-export const SkillBadges = ({skills,size = "large"}) => {
+type SkillBadgesProps = {
+  skills: string[];
+  size?: "large" | "small";
+};
+
+export const SkillBadges = ({ skills, size = "large" }: SkillBadgesProps) => {
   
   const colorCycle: ( 'danger' | 'primary' | 'success' )[] = ['danger', 'primary', 'success', ];
 

@@ -1,53 +1,33 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { SkillBadges } from '../ui/Badge';
+import { Student } from '@/store/store';
 
-const Image = ({ src, alt, width, height, className }) => (
+type ImageProps = {
+  src: string;
+  alt: string;
+  width?: number | string;
+  height?: number | string;
+  className?: string;
+};
+
+const Image = ({ src, alt, width, height, className }: ImageProps) => (
   <img src={src} alt={alt} width={width} height={height} className={className} />
 );
 
 interface StudentProfileCardProps {
-  student?: {
-    id: string;
-    name: string;
-    degree: string;
-    batch: string;
-    semester: string;
-    specialization: string;
-    description: string;
-    profileImage: string;
-    badges: Array<{
-      text: string;
-      variant: "destructive" | "secondary" | "success" | "warning";
-      icon?: string;
-    }>;
-  };
+  student: Student;
   onViewProfile?: (studentId: string) => void;
 }
 
-const DashboardStudentProfileCard: React.FC<StudentProfileCardProps> = ({ 
-  student = {
-    id: "1",
-    name: "Aarav Patel",
-    degree: "B.Tech - Computer Science & Engineering",
-    batch: "Batch 2022-26",
-    semester: "Sem 7",
-    specialization: "AI/ML",
-    description: "AI/ML enthusiast • Built a Gujarati TTS system • Likes to explore core Machine Learning",
-    profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    badges: [
-      { text: "Batch Topper", variant: "destructive", icon: "🎓" },
-      { text: "Hackathon Winner", variant: "secondary", icon: "🏆" },
-      { text: "National Level Achievement", variant: "success", icon: "🏅" },
-      { text: "High CGPA", variant: "warning" },
-    ]
-  }, 
+const DashboardStudentProfileCard = ({ 
+  student, 
   onViewProfile 
-}) => {
-  
+}: StudentProfileCardProps) => {
+
   const handleViewProfile = () => {
     if (onViewProfile) {
-      onViewProfile(student.id);
+      onViewProfile(student?._id);
     }
   };
 
@@ -61,7 +41,7 @@ const DashboardStudentProfileCard: React.FC<StudentProfileCardProps> = ({
             alt={student.name}
             width={80}
             height={80}
-            className="rounded-full object-cover border-2 border-gray-100"
+            className="rounde₹d-full object-cover border-2 border-gray-100"
           />
         </div>
         <div className="flex-1">

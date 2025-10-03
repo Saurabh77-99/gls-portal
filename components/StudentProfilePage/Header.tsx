@@ -19,7 +19,7 @@ const Header = () => {
     const router = useRouter()
     const {students,isGridViewSelected,toggleGridView} = useStudentStore()
 
-    const handleToggleChange = (value) =>{
+    const handleToggleChange = (value: string) =>{
         // setSelectedValue(value)
         if(value == 'grid'){
             toggleGridView(true)

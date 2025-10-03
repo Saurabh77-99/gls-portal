@@ -4,12 +4,8 @@ import Student from "@/models/Student";
 import { validateAdminAuthentication } from "@/lib/utils";
 import mongoose from "mongoose";
 
-interface Params {
-  id: string;
-}
-
 // UPDATE student
-export async function PUT(request: NextRequest, context: { params: Params }) { // <-- FIX HERE
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const auth = validateAdminAuthentication(request);
     if (!auth.isValid) {
@@ -20,7 +16,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) { /
     }
 
     await connectDB();
-    const { params } = context; // <-- AND FIX HERE
+    const params = await context.params;
     const { id } = params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -60,7 +56,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) { /
 }
 
 // DELETE student
-export async function DELETE(request: NextRequest, context: { params: Params }) { // <-- FIX HERE
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const auth = validateAdminAuthentication(request);
     if (!auth.isValid) {
@@ -71,7 +67,7 @@ export async function DELETE(request: NextRequest, context: { params: Params }) 
     }
 
     await connectDB();
-    const { params } = context; // <-- AND FIX HERE
+    const params = await context.params;
     const { id } = params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {

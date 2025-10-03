@@ -1,10 +1,20 @@
 "use client"
 
-import React, { useState } from 'react';
+import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useStudentStore } from '@/store/store';
+import { Student, useStudentStore } from '@/store/store';
+import { useRouter } from 'next/navigation';
 
-const Image = ({ src, alt, width, height, className }) => (
+
+type ImageProps = {
+  src: string;
+  alt: string;
+  width?: number | string;
+  height?: number | string;
+  className?: string;
+};
+
+const Image = ({ src, alt, width, height, className }: ImageProps) => (
   <img src={src} alt={alt} width={width} height={height} className={className} />
 );
 
@@ -31,7 +41,7 @@ const Badge = ({
 };
 
 // Student Card Component (embedded for completeness)
-const StudentCardComponent = ({ student, onViewProfile }) => {
+const StudentCardComponent = ({ student, onViewProfile }: { student : Student ; onViewProfile: (id: string) => void }) => {
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
@@ -39,8 +49,8 @@ const StudentCardComponent = ({ student, onViewProfile }) => {
       <div className="flex items-start gap-4 mb-4">
         <div className="relative flex-shrink-0">
           <Image
-            src={student.profileImage}
-            alt={student.name}
+            src={student?.profilePhoto}
+            alt={student?.name}
             width={64}
             height={64}
             className="rounded-full object-cover"
@@ -48,7 +58,7 @@ const StudentCardComponent = ({ student, onViewProfile }) => {
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 mb-1">{student.name}</h3>
-          <p className="text-gray-600 text-sm mb-1">{student.degree}</p>
+          <p className="text-gray-600 text-sm mb-1">{student?.degree}</p>
           <p className="text-gray-600 text-sm">
             {student.batch} • {student.semester} • {student.specialization}
           </p>
@@ -63,16 +73,16 @@ const StudentCardComponent = ({ student, onViewProfile }) => {
       {/* Badges and View Profile */}
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap gap-2">
-          {student?.tags?.map((badge, index) => (
-            <Badge key={index} variant={badge.variant}>
-              {badge.icon && <span className="mr-1">{badge.icon}</span>}
-              {badge.text}
-            </Badge>
-          ))}
+          {
+            student?.tags?.map((tag: string, index: number) => (
+              <Badge key={index} variant="outline">
+                {tag}
+              </Badge>
+            ))}
         </div>
         
         <button
-          onClick={() => onViewProfile(student.id)}
+          onClick={() => onViewProfile(student?._id)}
           className="flex items-center gap-1 text-purple-600 hover:text-purple-700 text-sm font-medium transition-colors"
         >
           View Profile
@@ -103,17 +113,15 @@ const sampleStudents = [
   }
 ];
 
-interface SearchResultsPageProps {
-  searchQuery?: string;
-  students?: typeof sampleStudents;
-}
 
-const SearchResultsPage: React.FC<SearchResultsPageProps> = () => {
+const Page = () => {
 
     const {
         searchResults,
         searchQuery,
-    } = useStudentStore() as any
+    } = useStudentStore()
+
+    const router = useRouter();
 
   const handleGoBack = () => {
     // Handle navigation back
@@ -122,7 +130,8 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = () => {
 
   const handleViewProfile = (studentId: string) => {
     // Handle view profile navigation
-    console.log(`View profile for student: ${studentId}`);
+    // console.log(`View profile for student: ${studentId}`);
+    router.push(`/dashboard/student/${studentId}`);
   };
 
   return (
@@ -140,7 +149,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = () => {
           
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-              Showing Results for "{searchQuery}"
+              Showing Results for &quot;{searchQuery}&quot;
             </h1>
           </div>
         </div>
@@ -175,4 +184,4 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = () => {
   );
 };
 
-export default SearchResultsPage;
+export default Page;

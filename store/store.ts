@@ -6,15 +6,51 @@ interface Project {
   description: string;
   techStack: string[];
   links: string[];
+  certificateLink?: string;
 }
+
+interface Experience {
+  company: string;
+  role: string;
+  duration: string;
+  description?: string;
+  certificateLink?: string;
+}
+
+interface ResearchPublication {
+  title: string;
+  journal: string;
+  paperUrl?: string;
+}
+
+interface Achievement {
+  title: string;
+  description?: string;
+}
+
 interface Certification {
   name: string;
   issuer: string;
   year: number;
+  certificateLink?: string;
 }
+
 interface Contact {
   email: string;
   phone: string;
+}
+
+interface SocialLinks {
+  github?: string;
+  linkedin?: string;
+  portfolio?: string;
+}
+
+interface Preferences {
+  industries: string[];
+  jobType: string[];
+  location: string[];
+  role: string[];
 }
 export interface Student {
   _id: string;
@@ -22,13 +58,23 @@ export interface Student {
   branch: string;
   batch: string;
   semester: number;
+  degree: string;
+  overview: string;
+  description: string;
   specialization: string;
   cgpa: number;
-  achievements: string[];
+  previousSemesterCgpa?: number;
+  email: string;
+  achievements: Achievement[];
   skills: string[];
+  languagesKnown: string[];
+  preferences: Preferences;
   projects: Project[];
+  experience: Experience[];
+  researchPublications: ResearchPublication[];
   certifications: Certification[];
   contact: Contact;
+  socialLinks: SocialLinks;
   resumeUrl: string;
   profilePhoto: string;
   tags: string[];

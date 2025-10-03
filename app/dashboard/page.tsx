@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 const DashboardPage = () => {
 
-  const {students} = useStudentStore() as any
+  const {students} = useStudentStore()
 
   useEffect(() => {
     console.log("Dashboard page loaded successfully!");

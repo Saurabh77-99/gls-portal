@@ -4,11 +4,7 @@ import Student from "@/models/Student";
 import { validateAuthentication } from "@/lib/utils";
 import mongoose from "mongoose";
 
-interface Params {
-  id: string;
-}
-
-export async function GET(request: NextRequest, { params }: { params: Params }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Validate authentication
     const auth = validateAuthentication(request);
@@ -21,7 +17,8 @@ export async function GET(request: NextRequest, { params }: { params: Params }) 
 
     await connectDB();
 
-    const { id } = params;
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
 
     // Validate MongoDB ObjectId
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {

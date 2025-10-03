@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 const SearchModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
 
     const [searchQuery,setSearchQuery] = useState<string>("")
-    const {searchStudents} = useStudentStore() as any
+    const {searchStudents} = useStudentStore()
     const router = useRouter()
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const SearchModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
           autoFocus
           placeholder="Aarav Patel"
           className="w-full bg-transparent text-2xl text-slate-800 placeholder-slate-400 focus:outline-none"
-          onChange={(e:any) => setSearchQuery(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button
           className="
