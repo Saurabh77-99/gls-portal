@@ -28,43 +28,35 @@ const SearchModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
   }
 
   const handleSearch = () =>{
+    if(searchQuery.trim() === "") return;
     searchStudents(searchQuery)
     router.push(`/dashboard/search`)
     onClose()
   }
 
   return (
-
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 bg-black/30 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: "rgba(0, 0, 0, 0.40)" }}
       onClick={onClose}
     >
       <div
-        className="
-          w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-purple-200/50
-          flex items-center gap-4 p-4
-          transform transition-all duration-300 ease-in-out
-          animate-fade-in-down
-        "
+        className="flex items-center justify-between w-[800px] p-5 absolute border-4 border-[#9D80F1] rounded-[20px] bg-neutral-100"
         onClick={(e) => e.stopPropagation()}
       >
-        <Search className="h-7 w-7 text-slate-400 flex-shrink-0 ml-2" />
+        <Search className="h-10 w-10 text-neutral-700 flex-shrink-0" />
         <input
           type="text"
           autoFocus
-          placeholder="Aarav Patel"
-          className="w-full bg-transparent text-2xl text-slate-800 placeholder-slate-400 focus:outline-none"
+          placeholder="Search students..."
+          className="flex-1 bg-transparent text-[32px] font-medium text-neutral-700 placeholder-neutral-400 mx-4 focus:outline-none"
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button
-          className="
-            flex-shrink-0 p-3 bg-[#5B2CE7] text-white rounded-2xl
-            hover:bg-[#4818D7] focus:outline-none focus:ring-2 focus:ring-[#5B2CE7] focus:ring-offset-2
-            transition-all transform hover:scale-105
-          "
+          className="flex-shrink-0 p-2 bg-[#5B2CE7] text-white rounded-[6px]  focus:outline-none transition-all cursor-pointer"
           onClick={handleSearch}
         >
-          <ArrowRight className="h-6 w-6" />
+          <ArrowRight className="h-8 w-8" />
         </button>
       </div>
     </div>
