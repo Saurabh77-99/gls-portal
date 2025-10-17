@@ -4,6 +4,7 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Student, useStudentStore } from '@/store/store';
 import { useRouter } from 'next/navigation';
+import { SkillBadges } from '@/components/ui/Badge';
 
 
 type ImageProps = {
@@ -18,72 +19,70 @@ const Image = ({ src, alt, width, height, className }: ImageProps) => (
   <img src={src} alt={alt} width={width} height={height} className={className} />
 );
 
-const Badge = ({
-  children,
-  variant = "default",
-  className = "",
-}: {
-  children: React.ReactNode
-  variant?: "default" | "outline" | "destructive" | "secondary" | "success" | "warning"
-  className?: string
-}) => {
-  const baseClasses = "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium";
-  const variants = {
-    default: "bg-gray-100 text-gray-800",
-    outline: "border border-gray-300 text-gray-700 bg-white",
-    destructive: "bg-pink-100 text-pink-700",
-    secondary: "bg-blue-100 text-blue-700",
-    success: "bg-green-100 text-green-700",
-    warning: "bg-orange-100 text-orange-700",
-  };
+// const Badge = ({
+//   children,
+//   variant = "default",
+//   className = "",
+// }: {
+//   children: React.ReactNode
+//   variant?: "default" | "outline" | "destructive" | "secondary" | "success" | "warning"
+//   className?: string
+// }) => {
+//   const baseClasses = "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium";
+//   const variants = {
+//     default: "bg-gray-100 text-gray-800",
+//     outline: "border border-gray-300 text-gray-700 bg-white",
+//     destructive: "bg-pink-100 text-pink-700",
+//     secondary: "bg-blue-100 text-blue-700",
+//     success: "bg-green-100 text-green-700",
+//     warning: "bg-orange-100 text-orange-700",
+//   };
 
-  return <span className={`${baseClasses} ${variants[variant]} ${className}`}>{children}</span>;
-};
+//   return <span className={`${baseClasses} ${variants[variant]} ${className}`}>{children}</span>;
+// };
 
-// Student Card Component (embedded for completeness)
 const StudentCardComponent = ({ student, onViewProfile }: { student : Student ; onViewProfile: (id: string) => void }) => {
-
+  console.log("Student Data:", student); // Debugging line to check student data
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+    <div className="bg-neutral-100 border border-neutral-200 rounded-3xl p-4">
       {/* Profile Section */}
       <div className="flex items-start gap-4 mb-4">
         <div className="relative flex-shrink-0">
           <Image
             src={student?.profilePhoto}
             alt={student?.name}
-            width={64}
-            height={64}
+            width={72}
+            height={72}
             className="rounded-full object-cover"
           />
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900 mb-1">{student.name}</h3>
-          <p className="text-gray-600 text-sm mb-1">{student?.degree}</p>
-          <p className="text-gray-600 text-sm">
-            {student.batch} • {student.semester} • {student.specialization}
+          <h3 className="text-xl font-semibold text-neutral-900 mb-1">{student?.name}</h3>
+          <p className="text-neutral-600 text-sm font-medium mb-1">{student?.branch}</p>
+          <p className="text-neutral-600 text-sm font-medium">
+            {student?.batch} • {student?.semester} • {student?.specialization}
           </p>
         </div>
       </div>
 
+      {/* Horizontal line */}
+
+      <hr className="border-neutral-200 mb-3" />
+
       {/* Description */}
-      <p className="text-gray-700 text-sm mb-4 leading-relaxed">
-        {student.description}
+      <p className="text-neutral-700 text-sm font-medium my-3">
+        {student?.overview}
       </p>
 
       {/* Badges and View Profile */}
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap gap-2">
-          {
-            student?.tags?.map((tag: string, index: number) => (
-              <Badge key={index} variant="outline">
-                {tag}
-              </Badge>
-            ))}
+          {<SkillBadges skills={student?.tags || []} size="small" />}
         </div>
         
         <button
           onClick={() => onViewProfile(student?._id)}
-          className="flex items-center gap-1 text-purple-600 hover:text-purple-700 text-sm font-medium transition-colors"
+          className="flex items-center gap-1 text-[#5B2CE7] text-[16px] font-medium transition-colors cursor-pointer"
         >
           View Profile
           <ChevronRight size={16} />
@@ -92,26 +91,6 @@ const StudentCardComponent = ({ student, onViewProfile }: { student : Student ; 
     </div>
   );
 };
-
-// Sample data - replace with your actual data
-const sampleStudents = [
-  {
-    id: "1",
-    name: "Aarav Patel",
-    degree: "B.Tech - Computer Science & Engineering",
-    batch: "Batch 2022-26",
-    semester: "Sem 7",
-    specialization: "AI/ML",
-    description: "AI/ML enthusiast • Built a Gujarati TTS system • Likes to explore core Machine Learning",
-    profileImage: "https://placehold.co/64x64/7c56ec/white?text=AP&font=sans",
-    badges: [
-      { text: "Batch Topper", variant: "destructive", icon: "🏆" },
-      { text: "Hackathon Winner", variant: "secondary", icon: "🏆" },
-      { text: "National Level Achievement", variant: "success", icon: "🎖️" },
-      { text: "High CGPA", variant: "warning", icon: "🎓" },
-    ]
-  }
-];
 
 
 const Page = () => {
@@ -124,46 +103,47 @@ const Page = () => {
     const router = useRouter();
 
   const handleGoBack = () => {
-    // Handle navigation back
-    console.log("Go back clicked");
+    router.back();
   };
 
   const handleViewProfile = (studentId: string) => {
-    // Handle view profile navigation
-    // console.log(`View profile for student: ${studentId}`);
     router.push(`/dashboard/student/${studentId}`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="min-h-screen w-screen bg-neutral-100">
+      <div className="px-8 py-4">
         {/* Header */}
-        <div className="mb-8">
+        <div className="flex items-center justify-between mb-6">
           <button
             onClick={handleGoBack}
-            className="flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium mb-6 transition-colors"
+            className="flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium cursor-pointer"
           >
             <ChevronLeft size={20} />
             Go Back
           </button>
           
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <h1 className="text-xl font-medium text-gray-900">
               Showing Results for &quot;{searchQuery}&quot;
             </h1>
           </div>
+          
+          <div></div> {/* Empty div for spacing */}
         </div>
 
         {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-lg font-medium text-gray-700">
-            {searchResults?.length} RESULT{searchResults?.length !== 1 ? 'S' : ''} FOUND
-          </p>
-          <div className="h-px bg-gray-200 mt-2"></div>
+        <div className="mb-8">
+          <div className="flex items-center gap-4">
+            <p className="text-lg font-medium text-gray-700">
+              {searchResults?.length} RESULT{searchResults?.length !== 1 ? 'S' : ''} FOUND
+            </p>
+            <div className="flex-1 h-[1px] bg-neutral-200"></div>
+          </div>
         </div>
 
         {/* Results */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {searchResults.map((student) => (
             <StudentCardComponent
               key={student._id}

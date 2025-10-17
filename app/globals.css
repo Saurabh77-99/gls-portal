@@ -178,7 +178,6 @@ a {
 /* Focus styles for accessibility */
 button:focus-visible,
 a:focus-visible,
-input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--colors-primary-500);
