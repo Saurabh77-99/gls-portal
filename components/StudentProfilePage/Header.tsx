@@ -4,7 +4,7 @@ import TextField from '../ui/TextField'
 import Toggle from '../ui/Toggle'
 import Button from '../ui/Button'
 import SearchModal from '../ui/SearchModal'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useStudentStore } from '@/store/store'
 
 const toggleOptions = [
@@ -17,6 +17,7 @@ const Header = () => {
     const [selectedvalue,setSelectedValue] = useState(toggleOptions[0]?.value)
     const [showSearchModal,setShowSearchModal] = useState(false)
     const router = useRouter()
+    const pathname = usePathname()
     const {students,isGridViewSelected,toggleGridView} = useStudentStore()
 
     const handleToggleChange = (value: string) =>{
@@ -49,10 +50,10 @@ const Header = () => {
 
         <div className="flex justify-center items-center gap-8">
             <div className="">
-                <Toggle
+                { pathname !== "/dashboard/search" &&<Toggle
                 options={toggleOptions}
                 onToggle={(value)=>handleToggleChange(value)}
-                />
+                />}
             </div>
             <div className="">
                 <Button> 
