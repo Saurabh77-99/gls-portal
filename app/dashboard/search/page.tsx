@@ -117,7 +117,7 @@ const Page = () => {
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={handleGoBack}
-            className="flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium cursor-pointer"
+            className="flex items-center gap-2 text-[#5B2CE7] font-medium cursor-pointer"
           >
             <ChevronLeft size={20} />
             Go Back
