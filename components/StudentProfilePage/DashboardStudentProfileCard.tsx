@@ -32,44 +32,43 @@ const DashboardStudentProfileCard = ({
   };
 
   return (
-    <div className="w-[442px] h-[251px] bg-neutral-100 border border-b-neutral-200 rounded-3xl p-4 ">
+    <div className="w-[442px] bg-neutral-100 border border-neutral-200 rounded-3xl p-6 flex flex-col">
       {/* Profile Section */}
-      <div className="max-w[410px] flex items-start gap-6 mb-2">
+      <div className="flex items-start gap-5 mb-4">
         <div className="relative flex-shrink-0">
           <Image
             src={student.profilePhoto}
             alt={student.name}
             width={80}
             height={80}
-            className="rounde₹d-full object-cover border-2 border-gray-100"
+            className="rounded-full object-cover w-20 h-20 border-2 border-neutral-200"
           />
         </div>
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">{student.name}</h2>
-          <p className="text-gray-600 text-base mb-1">{student.degree}</p>
-          <p className="text-gray-600 text-base">
-            {student.batch} • {student.semester} • {student.specialization}
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-semibold text-neutral-900 mb-1 leading-tight">{student.name}</h2>
+          <p className="text-neutral-700 text-sm font-medium mb-1">{student.degree || `B.Tech - ${student.branch}`}</p>
+          <p className="text-neutral-600 text-sm">
+            Batch {student.batch} • Sem {student.semester} • {student.specialization}
           </p>
         </div>
       </div>
 
-      {/* Separator Line */}
-      <div className="h-px bg-gray-200 mb-6"></div>
-
       {/* Description */}
-      <p className="text-gray-700 text-base mb-8 leading-relaxed">
+      <p className="text-neutral-700 text-sm mb-4 leading-relaxed line-clamp-2">
         {student?.overview}
       </p>
 
       {/* Badges and View Profile Button */}
-      <div className="relative">
-        <SkillBadges size='small' skills={student?.tags}/>
+      <div className="flex items-center justify-between mt-auto pt-2">
+        <div className="flex-1">
+          <SkillBadges size='small' skills={student?.tags || []}/>
+        </div>
         <button
           onClick={handleViewProfile}
-          className="absolute bottom-0 right-0 flex items-center gap-2 text-purple-600 hover:text-purple-700 text-lg font-medium transition-colors group"
+          className="flex items-center gap-1 text-[#5B2CE7] hover:text-[#4818D7] text-base font-medium transition-colors ml-4 flex-shrink-0 group"
         >
           View Profile
-          <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
         </button>
       </div>
     </div>

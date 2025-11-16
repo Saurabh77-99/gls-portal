@@ -112,7 +112,9 @@ interface StudentState {
   searchQuery: string;
   searchLoading: boolean;
   searchError: string | null;
-  isGridViewSelected: boolean,
+  isGridViewSelected: boolean;
+  filteredStudents: Student[];
+  activeFilters: string[];
   fetchStudents: () => Promise<void>;
   goToNextStudent: () => Promise<string | null>;
   goToPrevStudent: () => string | null;
@@ -120,6 +122,8 @@ interface StudentState {
   searchStudents: (query: string) => Promise<void>;
   toggleGridView: (isSelected: boolean) => void;
   clearSearch: () => void;
+  toggleFilter: (filter: string) => void;
+  clearFilters: () => void;
   reset: () => void; 
 }
 
@@ -137,6 +141,8 @@ export const useStudentStore = create<StudentState>((set, get) => ({
   searchLoading: false,
   searchError: null,
   isGridViewSelected: false,
+  filteredStudents: [],
+  activeFilters: [],
   
   fetchStudents: async () => {
     const { loading, page, hasMore } = get();
@@ -147,12 +153,37 @@ export const useStudentStore = create<StudentState>((set, get) => ({
       const response = await axios.get<PaginatedApiResponse>(`/api/students?page=${nextPageToFetch}&limit=10`);
       const result = response.data;
       if (!result.success) { throw new Error(result.message || 'API returned an error.'); }
-      set(state => ({
-        students: [...state.students, ...result.data],
-        page: result.pagination.currentPage,
-        hasMore: result.pagination.hasNextPage,
-        totalStudents: result.pagination.totalStudents,
-      }));
+      set(state => {
+        const newStudents = [...state.students, ...result.data];
+        const applyFilters = (students: Student[], filters: string[]): Student[] => {
+          if (filters.length === 0) return students;
+          return students.filter(student => {
+            return filters.every(filter => {
+              if (filter === 'AI/ML' && (student.specialization === 'AI/ML' || student.branch === 'AI/ML')) return true;
+              if (filter === 'Cyber Security' && (student.specialization === 'Cyber Security' || student.branch === 'Cyber Security')) return true;
+              if (filter === 'Data Science' && (student.specialization === 'Data Science' || student.branch === 'Data Science')) return true;
+              if (filter === 'High CGPA' && student.cgpa >= 8.0) return true;
+              if (student.tags && student.tags.includes(filter)) return true;
+              if (filter === 'Hackathon Winner' && student.achievements?.some(a => 
+                a.title?.toLowerCase().includes('hackathon') || a.title?.toLowerCase().includes('winner')
+              )) return true;
+              if (filter === 'Industry Experience' && student.experience && student.experience.length > 0) return true;
+              if (filter === '0 Backlogs' && student.cgpa >= 7.0) return true;
+              return false;
+            });
+          });
+        };
+        const filtered = state.activeFilters.length > 0 
+          ? applyFilters(newStudents, state.activeFilters)
+          : newStudents;
+        return {
+          students: newStudents,
+          page: result.pagination.currentPage,
+          hasMore: result.pagination.hasNextPage,
+          totalStudents: result.pagination.totalStudents,
+          filteredStudents: filtered,
+        };
+      });
     } catch (err) {
       let errorMessage = 'Failed to fetch students.';
       if (axios.isAxiosError(err)) { errorMessage = (err as AxiosError<PaginatedApiResponse>).response?.data?.message || err.message; }
@@ -237,6 +268,63 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     });
   },
 
+  toggleFilter: (filter: string) => {
+    const { activeFilters, students } = get();
+    const newFilters = activeFilters.includes(filter)
+      ? activeFilters.filter(f => f !== filter)
+      : [...activeFilters, filter];
+    
+    const applyFilters = (students: Student[], filters: string[]): Student[] => {
+      if (filters.length === 0) return students;
+      
+      return students.filter(student => {
+        return filters.every(filter => {
+          // Check specialization/branch
+          if (filter === 'AI/ML' && (student.specialization === 'AI/ML' || student.branch === 'AI/ML')) return true;
+          if (filter === 'Cyber Security' && (student.specialization === 'Cyber Security' || student.branch === 'Cyber Security')) return true;
+          if (filter === 'Data Science' && (student.specialization === 'Data Science' || student.branch === 'Data Science')) return true;
+          
+          // Check CGPA
+          if (filter === 'High CGPA' && student.cgpa >= 8.0) return true;
+          
+          // Check tags
+          if (student.tags && student.tags.includes(filter)) return true;
+          
+          // Check achievements
+          if (filter === 'Hackathon Winner' && student.achievements?.some(a => 
+            a.title?.toLowerCase().includes('hackathon') || 
+            a.title?.toLowerCase().includes('winner')
+          )) return true;
+          
+          // Check experience
+          if (filter === 'Industry Experience' && student.experience && student.experience.length > 0) return true;
+          
+          // Check backlogs (assuming 0 backlogs means no backlogs mentioned or CGPA is good)
+          if (filter === '0 Backlogs' && student.cgpa >= 7.0) return true;
+          
+          return false;
+        });
+      });
+    };
+    
+    const filtered = newFilters.length > 0 
+      ? applyFilters(students, newFilters)
+      : students;
+    
+    set({
+      activeFilters: newFilters,
+      filteredStudents: filtered,
+    });
+  },
+
+  clearFilters: () => {
+    const { students } = get();
+    set({
+      activeFilters: [],
+      filteredStudents: students.length > 0 ? students : [],
+    });
+  },
+
   reset: () => {
     set({
       students: [],
@@ -251,6 +339,8 @@ export const useStudentStore = create<StudentState>((set, get) => ({
       searchLoading: false,
       searchError: null,
       isGridViewSelected: false,
+      filteredStudents: [],
+      activeFilters: [],
     });
   },
 }));

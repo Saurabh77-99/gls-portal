@@ -457,13 +457,14 @@
 
 .access-form {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: clamp(12px, 3vw, 18px);
   margin: 10px auto 22px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .access-field {
@@ -475,9 +476,9 @@
   background: #F4F0F0;
   border: 2px solid var(--colors-neutral-200);
   border-radius: 16px;
-  width: 100%;
-  max-width: clamp(300px, 50vw, 520px);
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 200px;
+  max-width: none;
 }
 
 .access-field input {
@@ -527,6 +528,9 @@
   box-shadow: var(--shadow-button-inset-light);
   flex-shrink: 0;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .access-help {
@@ -735,12 +739,14 @@
 
 @media (max-width: 720px) {
   .access-form {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
+    flex-wrap: nowrap;
   }
   .access-field {
     max-width: none;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
   }
 }
 
@@ -914,16 +920,18 @@
 /* Desktop inline form layout */
 @media (min-width: 721px) {
   .access-form.only-mdup {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex !important;
+    flex-direction: row !important;
     align-items: center;
     gap: 10px;
-    max-width: 600px;
+    max-width: 800px;
     width: 100%;
     margin: 90px auto 10px;
+    flex-wrap: nowrap !important;
   }
   .access-form.only-mdup .access-field {
-    width: auto;
+    flex: 1;
+    min-width: 0;
     max-width: none;
     height: 60px;
     padding: 0 12px 0 16px;
